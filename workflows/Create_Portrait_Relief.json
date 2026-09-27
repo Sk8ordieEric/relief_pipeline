@@ -1,0 +1,2889 @@
+{
+  "id": "807ec5d0-7544-4800-afa8-2da9e794112d",
+  "revision": 0,
+  "last_node_id": 106,
+  "last_link_id": 68,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [
+        40,
+        60
+      ],
+      "size": [
+        380,
+        90
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1,
+            21,
+            40
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "flux-2-klein-4b-fp8.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "CLIPLoader",
+      "pos": [
+        40,
+        200
+      ],
+      "size": [
+        380,
+        130
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            2,
+            15,
+            34
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "qwen_3_4b.safetensors",
+        "flux2",
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "pos": [
+        40,
+        390
+      ],
+      "size": [
+        380,
+        70
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            12,
+            14,
+            30,
+            33,
+            49
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "flux2-vae.safetensors"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "LoadImage",
+      "pos": [
+        40,
+        500
+      ],
+      "size": [
+        380,
+        330
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            51,
+            52
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "Raven_Right_Pose.png",
+        "image"
+      ],
+      "title": "Load Image  ->  CUSTOMER PHOTO goes here",
+      "color": "#233",
+      "bgcolor": "#355"
+    },
+    {
+      "id": 10,
+      "type": "CLIPTextEncode",
+      "pos": [
+        500,
+        60
+      ],
+      "size": [
+        430,
+        210
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            3,
+            4
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "A photograph of one dog alone, the only subject in the frame. Head and shoulders, facing three-quarters toward the right edge of the frame, eyes looking at the camera. Dense dark fur with clearly visible coat direction across the cheeks and chest, one ear forward and one laid back, mouth closed, calm alert expression. Soft directional light from the upper left with gentle falloff across the muzzle, highlights on the brow and the bridge of the nose. Plain seamless pale grey studio backdrop holding one even tone, the dog filling most of the frame with clear margin on all four sides. Sharp focus on the eyes, natural fur texture, high detail."
+      ]
+    },
+    {
+      "id": 11,
+      "type": "ConditioningZeroOut",
+      "pos": [
+        500,
+        320
+      ],
+      "size": [
+        300,
+        30
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            5
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ConditioningZeroOut",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 12,
+      "type": "CFGGuider",
+      "pos": [
+        1010,
+        60
+      ],
+      "size": [
+        290,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 3
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [
+            7
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CFGGuider",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        1
+      ]
+    },
+    {
+      "id": 13,
+      "type": "KSamplerSelect",
+      "pos": [
+        1010,
+        220
+      ],
+      "size": [
+        290,
+        60
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            8
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSamplerSelect",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "euler"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "Flux2Scheduler",
+      "pos": [
+        1010,
+        320
+      ],
+      "size": [
+        290,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            9
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Flux2Scheduler",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        4,
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": 15,
+      "type": "RandomNoise",
+      "pos": [
+        1010,
+        470
+      ],
+      "size": [
+        290,
+        90
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [
+            6
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RandomNoise",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        0,
+        "randomize"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "EmptyFlux2LatentImage",
+      "pos": [
+        1010,
+        600
+      ],
+      "size": [
+        290,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            10
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyFlux2LatentImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 17,
+      "type": "SamplerCustomAdvanced",
+      "pos": [
+        1360,
+        60
+      ],
+      "size": [
+        290,
+        140
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "noise",
+          "type": "NOISE",
+          "link": 6
+        },
+        {
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 7
+        },
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 8
+        },
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 9
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "LATENT",
+          "links": [
+            11
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerCustomAdvanced",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 18,
+      "type": "VAEDecode",
+      "pos": [
+        1710,
+        60
+      ],
+      "size": [
+        210,
+        50
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 11
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            57,
+            58
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 19,
+      "type": "PreviewImage",
+      "pos": [
+        1970,
+        60
+      ],
+      "size": [
+        430,
+        470
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 57
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [],
+      "title": "STAGE T PREVIEW  -  test subject"
+    },
+    {
+      "id": 20,
+      "type": "SaveImage",
+      "pos": [
+        3200,
+        60
+      ],
+      "size": [
+        430,
+        470
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 58
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "RENAME_BEFORE_SAVING"
+      ],
+      "title": "Save  STAGE T test subject",
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 30,
+      "type": "ImageScaleToTotalPixels",
+      "pos": [
+        500,
+        1800
+      ],
+      "size": [
+        330,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 52
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            32
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageScaleToTotalPixels",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "nearest-exact",
+        1.0,
+        1
+      ]
+    },
+    {
+      "id": 31,
+      "type": "CLIPTextEncode",
+      "pos": [
+        500,
+        1960
+      ],
+      "size": [
+        430,
+        250
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 34
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            35,
+            37
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "A carved wooden relief portrait of this animal in a flat walnut panel. Smooth sculptural modelling shaped with round gouges, the forms full and flowing, never flat chisel facets. The coat reads as grouped flowing masses that follow the direction the fur lies, broad soft ridges rather than individual hairs. The eyes are rounded domes set under a defined brow ridge with a clear rim around each. The nose is one smooth raised form. The ears are broad simple planes. Matte unpolished wood. Soft raking light from the upper left, gentle gradients across the modelled surfaces, a clear shadow beneath the muzzle and inside each ear. Keep the exact head angle, proportions, ear position and eye spacing. The background is the flat uncarved panel surface, one uniform tone, edge to edge."
+      ]
+    },
+    {
+      "id": 32,
+      "type": "VAEEncode",
+      "pos": [
+        980,
+        1800
+      ],
+      "size": [
+        250,
+        50
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 32
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 33
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            36,
+            39
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEEncode",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 33,
+      "type": "ReferenceLatent",
+      "pos": [
+        1280,
+        1800
+      ],
+      "size": [
+        280,
+        60
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 35
+        },
+        {
+          "name": "latent",
+          "type": "LATENT",
+          "link": 36
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            41
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReferenceLatent",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 34,
+      "type": "ConditioningZeroOut",
+      "pos": [
+        1280,
+        1920
+      ],
+      "size": [
+        280,
+        30
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 37
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            38
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ConditioningZeroOut",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 35,
+      "type": "ReferenceLatent",
+      "pos": [
+        1280,
+        2000
+      ],
+      "size": [
+        280,
+        60
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 38
+        },
+        {
+          "name": "latent",
+          "type": "LATENT",
+          "link": 39
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            42
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReferenceLatent",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 36,
+      "type": "CFGGuider",
+      "pos": [
+        1630,
+        1800
+      ],
+      "size": [
+        290,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 40
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 41
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 42
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [
+            44
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CFGGuider",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        1
+      ]
+    },
+    {
+      "id": 37,
+      "type": "KSamplerSelect",
+      "pos": [
+        1630,
+        1960
+      ],
+      "size": [
+        290,
+        60
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            45
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSamplerSelect",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "euler"
+      ]
+    },
+    {
+      "id": 38,
+      "type": "Flux2Scheduler",
+      "pos": [
+        1630,
+        2060
+      ],
+      "size": [
+        290,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            46
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Flux2Scheduler",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        4,
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": 39,
+      "type": "RandomNoise",
+      "pos": [
+        1630,
+        2210
+      ],
+      "size": [
+        290,
+        90
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [
+            43
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RandomNoise",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        22222,
+        "randomize"
+      ]
+    },
+    {
+      "id": 40,
+      "type": "EmptyFlux2LatentImage",
+      "pos": [
+        1630,
+        2340
+      ],
+      "size": [
+        290,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            47
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyFlux2LatentImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 41,
+      "type": "SamplerCustomAdvanced",
+      "pos": [
+        1980,
+        1800
+      ],
+      "size": [
+        290,
+        140
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "noise",
+          "type": "NOISE",
+          "link": 43
+        },
+        {
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 44
+        },
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 45
+        },
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 46
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 47
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "LATENT",
+          "links": [
+            48
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerCustomAdvanced",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 42,
+      "type": "VAEDecode",
+      "pos": [
+        2330,
+        1800
+      ],
+      "size": [
+        210,
+        50
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 48
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 49
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            50,
+            54,
+            60
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 43,
+      "type": "PreviewImage",
+      "pos": [
+        2590,
+        1800
+      ],
+      "size": [
+        430,
+        470
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 50
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [],
+      "title": "STAGE 2 PREVIEW  -  sculpted relief"
+    },
+    {
+      "id": 45,
+      "type": "SaveImage",
+      "pos": [
+        3200,
+        1140
+      ],
+      "size": [
+        430,
+        470
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 60
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "RENAME_BEFORE_SAVING"
+      ],
+      "title": "Save  STAGE 2 sculpted relief",
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 60,
+      "type": "LoadDA3Model",
+      "pos": [
+        500,
+        2620
+      ],
+      "size": [
+        400,
+        100
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "DA3_MODEL",
+          "type": "DA3_MODEL",
+          "links": [
+            53
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadDA3Model",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "depth_anything_3_mono_large.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 61,
+      "type": "DA3Inference",
+      "pos": [
+        980,
+        2620
+      ],
+      "size": [
+        350,
+        150
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "da3_model",
+          "type": "DA3_MODEL",
+          "link": 53
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 54
+        }
+      ],
+      "outputs": [
+        {
+          "name": "da3_geometry",
+          "type": "DA3_GEOMETRY",
+          "links": [
+            55
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DA3Inference",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        1428,
+        "upper_bound_resize",
+        "mono"
+      ]
+    },
+    {
+      "id": 62,
+      "type": "DA3Render",
+      "pos": [
+        1390,
+        2620
+      ],
+      "size": [
+        350,
+        130
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "da3_geometry",
+          "type": "DA3_GEOMETRY",
+          "link": 55
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            56,
+            61,
+            62
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DA3Render",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "depth",
+        "min_max",
+        false
+      ]
+    },
+    {
+      "id": 63,
+      "type": "PreviewImage",
+      "pos": [
+        1800,
+        2620
+      ],
+      "size": [
+        430,
+        470
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 56
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [],
+      "title": "STAGE 3 PREVIEW  -  the depth map"
+    },
+    {
+      "id": 64,
+      "type": "SaveImage",
+      "pos": [
+        3200,
+        1680
+      ],
+      "size": [
+        430,
+        470
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 61
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "RENAME_BEFORE_SAVING"
+      ],
+      "title": "Save  STAGE 3 depth",
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 70,
+      "type": "ImageScaleToTotalPixels",
+      "pos": [
+        500,
+        1000
+      ],
+      "size": [
+        330,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 51
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            13
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageScaleToTotalPixels",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "nearest-exact",
+        1.0,
+        1
+      ]
+    },
+    {
+      "id": 71,
+      "type": "CLIPTextEncode",
+      "pos": [
+        500,
+        1160
+      ],
+      "size": [
+        430,
+        250
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            16,
+            18
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "Keep the animal exactly as it is. Identical breed, identical head angle, identical ear position, identical eye placement and spacing, identical muzzle length and width, identical coat pattern and markings. Change only the lighting and the background. The lighting becomes soft, even and frontal, filling the shadow side of the face so the muzzle, brow and chest are all clearly readable, with no hard shadow edge anywhere and no blown-out highlights. The background becomes one completely flat even pale grey tone across the whole frame, nothing behind the animal and nothing beneath it. The outline stays crisp, hard and unbroken all the way around, every tuft of fur at the edge cleanly separated from the background."
+      ]
+    },
+    {
+      "id": 72,
+      "type": "VAEEncode",
+      "pos": [
+        980,
+        1000
+      ],
+      "size": [
+        250,
+        50
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 13
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 14
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            17,
+            20
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEEncode",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 73,
+      "type": "ReferenceLatent",
+      "pos": [
+        1280,
+        1000
+      ],
+      "size": [
+        280,
+        60
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 16
+        },
+        {
+          "name": "latent",
+          "type": "LATENT",
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            22
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReferenceLatent",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 74,
+      "type": "ConditioningZeroOut",
+      "pos": [
+        1280,
+        1120
+      ],
+      "size": [
+        280,
+        30
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            19
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ConditioningZeroOut",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 75,
+      "type": "ReferenceLatent",
+      "pos": [
+        1280,
+        1200
+      ],
+      "size": [
+        280,
+        60
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 19
+        },
+        {
+          "name": "latent",
+          "type": "LATENT",
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            23
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReferenceLatent",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 76,
+      "type": "CFGGuider",
+      "pos": [
+        1630,
+        1000
+      ],
+      "size": [
+        290,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 21
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 22
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 23
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [
+            25
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CFGGuider",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        1
+      ]
+    },
+    {
+      "id": 77,
+      "type": "KSamplerSelect",
+      "pos": [
+        1630,
+        1160
+      ],
+      "size": [
+        290,
+        60
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            26
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSamplerSelect",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "euler"
+      ]
+    },
+    {
+      "id": 78,
+      "type": "Flux2Scheduler",
+      "pos": [
+        1630,
+        1260
+      ],
+      "size": [
+        290,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            27
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Flux2Scheduler",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        4,
+        1024,
+        1024
+      ]
+    },
+    {
+      "id": 79,
+      "type": "RandomNoise",
+      "pos": [
+        1630,
+        1410
+      ],
+      "size": [
+        290,
+        90
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [
+            24
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RandomNoise",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        11111,
+        "randomize"
+      ]
+    },
+    {
+      "id": 80,
+      "type": "EmptyFlux2LatentImage",
+      "pos": [
+        1630,
+        1540
+      ],
+      "size": [
+        290,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            28
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyFlux2LatentImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 81,
+      "type": "SamplerCustomAdvanced",
+      "pos": [
+        1980,
+        1000
+      ],
+      "size": [
+        290,
+        140
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "noise",
+          "type": "NOISE",
+          "link": 24
+        },
+        {
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 25
+        },
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 26
+        },
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 27
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 28
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "LATENT",
+          "links": [
+            29
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerCustomAdvanced",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 82,
+      "type": "VAEDecode",
+      "pos": [
+        2330,
+        1000
+      ],
+      "size": [
+        210,
+        50
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 29
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 30
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            31,
+            59
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 83,
+      "type": "PreviewImage",
+      "pos": [
+        2590,
+        1000
+      ],
+      "size": [
+        430,
+        470
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 31
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [],
+      "title": "STAGE 1 PREVIEW  -  normalized"
+    },
+    {
+      "id": 84,
+      "type": "SaveImage",
+      "pos": [
+        3200,
+        600
+      ],
+      "size": [
+        430,
+        470
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 59
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "RENAME_BEFORE_SAVING"
+      ],
+      "title": "Save  STAGE 1 normalized",
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 90,
+      "type": "MarkdownNote",
+      "pos": [
+        40,
+        880
+      ],
+      "size": [
+        430,
+        1180
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "# Create Portrait Relief\n\nPet and family portrait reliefs from a photograph. **Every stage reads a FILE**, so an approved image is frozen on disk and cannot drift.\n\n## For a real customer job, start at Stage 1\nPoint **Load Image** at the customer's photo and leave Stage T muted. Stage T only exists to make synthetic test subjects while the pipeline is being tuned.\n\n## The one node that matters\n**Load Image** (teal, left) feeds BOTH Stage 1 and Stage 2. Whichever file you point it at is your position in the chain.\n\n## What the tool can actually cut\nAt 5 mm depth the 1/16\" tapered ball has an effective radius of **1.19 mm**, not 0.79 mm, because the taper flares. The narrowest feature it can cut is about **2.4 mm wide**. On an 8x10 panel:\n\n- eye ~25 mm, iris ~12 mm - comfortable\n- nostril and lip line ~3 mm - borderline, keep them as soft grooves\n- whiskers, eyelashes, individual hairs - **impossible**\n\nThis is why Stage 2 asks for \"grouped flowing masses that follow the direction the fur lies\" instead of hair detail. Fur that survives machining is fur that was already grouped in the image. Asking the model for fine hair produces detail the cutter turns into mush.\n\n## STAGE T - test subject  (active)\nGenerates a synthetic pet photo to develop against. Deliberately a moderate-difficulty case: dark fur, side light, visible coat direction.\n\n## STAGE 1 - normalize  (muted)  <- the risky one\nFlattens the lighting and the background. **This is the stage that can quietly ruin a commission.** Compare the preview against the original before you approve it - check eye spacing, muzzle length and ear position specifically. A relit photo that is 5% wrong in the muzzle reads as \"that isn't my dog\" and no amount of good machining fixes it.\n\nA photo with a hard shadow across the face cannot be rescued downstream. We learned that on the raven: a cast shadow measured luminance 34 against the subject's 10-21, and no threshold separates those. Fix it here or reshoot.\n\n## STAGE 2 - sculpted relief  (muted)\nRounded gouge-cut forms, not the flat chisel planes the raven used. Portraits want modelling, not tool marks.\n\n## STAGE 3 - depth map  (muted)\nDepth Anything 3. It is noticeably better on faces and animals than on birds - this stage should need less correction than it did for the raven.\n\n## STAGE 4 - silhouette  (muted)\nTune **THRESHOLD** until the animal is solid white on solid black. Ear tips and chest fur are where it breaks.\n\n## Then what\nThe height field, mesh and STL are built in **Python**, not here. This workflow hands off two files: the **Stage 3 depth map** and the **Stage 4 silhouette**.\n"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 100,
+      "type": "ImageToMask",
+      "pos": [
+        560,
+        3240
+      ],
+      "size": [
+        300,
+        60
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 62
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            63
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageToMask",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "red"
+      ],
+      "title": "silhouette  1  pick channel"
+    },
+    {
+      "id": 101,
+      "type": "ThresholdMask",
+      "pos": [
+        900,
+        3240
+      ],
+      "size": [
+        300,
+        60
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 63
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            64
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ThresholdMask",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        0.1
+      ],
+      "title": "silhouette  2  THRESHOLD  <- tune this"
+    },
+    {
+      "id": 102,
+      "type": "GrowMask",
+      "pos": [
+        1240,
+        3240
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 64
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            65
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GrowMask",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        0,
+        true
+      ],
+      "title": "silhouette  3  grow / shrink"
+    },
+    {
+      "id": 103,
+      "type": "MaskToImage",
+      "pos": [
+        1580,
+        3240
+      ],
+      "size": [
+        260,
+        40
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 65
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            66
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskToImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 104,
+      "type": "Morphology",
+      "pos": [
+        1880,
+        3240
+      ],
+      "size": [
+        300,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 66
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            67,
+            68
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Morphology",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "close",
+        9
+      ],
+      "title": "silhouette  4  close pinholes"
+    },
+    {
+      "id": 105,
+      "type": "PreviewImage",
+      "pos": [
+        2220,
+        3240
+      ],
+      "size": [
+        430,
+        470
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 67
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [],
+      "title": "STAGE 4 PREVIEW  -  the outline"
+    },
+    {
+      "id": 106,
+      "type": "SaveImage",
+      "pos": [
+        2690,
+        3240
+      ],
+      "size": [
+        430,
+        470
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 68
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "RENAME_BEFORE_SAVING"
+      ],
+      "title": "Save  STAGE 4 silhouette",
+      "color": "#322",
+      "bgcolor": "#533"
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      12,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      2,
+      0,
+      10,
+      0,
+      "CLIP"
+    ],
+    [
+      3,
+      10,
+      0,
+      12,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      4,
+      10,
+      0,
+      11,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      5,
+      11,
+      0,
+      12,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      6,
+      15,
+      0,
+      17,
+      0,
+      "NOISE"
+    ],
+    [
+      7,
+      12,
+      0,
+      17,
+      1,
+      "GUIDER"
+    ],
+    [
+      8,
+      13,
+      0,
+      17,
+      2,
+      "SAMPLER"
+    ],
+    [
+      9,
+      14,
+      0,
+      17,
+      3,
+      "SIGMAS"
+    ],
+    [
+      10,
+      16,
+      0,
+      17,
+      4,
+      "LATENT"
+    ],
+    [
+      11,
+      17,
+      0,
+      18,
+      0,
+      "LATENT"
+    ],
+    [
+      12,
+      3,
+      0,
+      18,
+      1,
+      "VAE"
+    ],
+    [
+      13,
+      70,
+      0,
+      72,
+      0,
+      "IMAGE"
+    ],
+    [
+      14,
+      3,
+      0,
+      72,
+      1,
+      "VAE"
+    ],
+    [
+      15,
+      2,
+      0,
+      71,
+      0,
+      "CLIP"
+    ],
+    [
+      16,
+      71,
+      0,
+      73,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      17,
+      72,
+      0,
+      73,
+      1,
+      "LATENT"
+    ],
+    [
+      18,
+      71,
+      0,
+      74,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      19,
+      74,
+      0,
+      75,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      20,
+      72,
+      0,
+      75,
+      1,
+      "LATENT"
+    ],
+    [
+      21,
+      1,
+      0,
+      76,
+      0,
+      "MODEL"
+    ],
+    [
+      22,
+      73,
+      0,
+      76,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      23,
+      75,
+      0,
+      76,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      24,
+      79,
+      0,
+      81,
+      0,
+      "NOISE"
+    ],
+    [
+      25,
+      76,
+      0,
+      81,
+      1,
+      "GUIDER"
+    ],
+    [
+      26,
+      77,
+      0,
+      81,
+      2,
+      "SAMPLER"
+    ],
+    [
+      27,
+      78,
+      0,
+      81,
+      3,
+      "SIGMAS"
+    ],
+    [
+      28,
+      80,
+      0,
+      81,
+      4,
+      "LATENT"
+    ],
+    [
+      29,
+      81,
+      0,
+      82,
+      0,
+      "LATENT"
+    ],
+    [
+      30,
+      3,
+      0,
+      82,
+      1,
+      "VAE"
+    ],
+    [
+      31,
+      82,
+      0,
+      83,
+      0,
+      "IMAGE"
+    ],
+    [
+      32,
+      30,
+      0,
+      32,
+      0,
+      "IMAGE"
+    ],
+    [
+      33,
+      3,
+      0,
+      32,
+      1,
+      "VAE"
+    ],
+    [
+      34,
+      2,
+      0,
+      31,
+      0,
+      "CLIP"
+    ],
+    [
+      35,
+      31,
+      0,
+      33,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      36,
+      32,
+      0,
+      33,
+      1,
+      "LATENT"
+    ],
+    [
+      37,
+      31,
+      0,
+      34,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      38,
+      34,
+      0,
+      35,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      39,
+      32,
+      0,
+      35,
+      1,
+      "LATENT"
+    ],
+    [
+      40,
+      1,
+      0,
+      36,
+      0,
+      "MODEL"
+    ],
+    [
+      41,
+      33,
+      0,
+      36,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      42,
+      35,
+      0,
+      36,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      43,
+      39,
+      0,
+      41,
+      0,
+      "NOISE"
+    ],
+    [
+      44,
+      36,
+      0,
+      41,
+      1,
+      "GUIDER"
+    ],
+    [
+      45,
+      37,
+      0,
+      41,
+      2,
+      "SAMPLER"
+    ],
+    [
+      46,
+      38,
+      0,
+      41,
+      3,
+      "SIGMAS"
+    ],
+    [
+      47,
+      40,
+      0,
+      41,
+      4,
+      "LATENT"
+    ],
+    [
+      48,
+      41,
+      0,
+      42,
+      0,
+      "LATENT"
+    ],
+    [
+      49,
+      3,
+      0,
+      42,
+      1,
+      "VAE"
+    ],
+    [
+      50,
+      42,
+      0,
+      43,
+      0,
+      "IMAGE"
+    ],
+    [
+      51,
+      4,
+      0,
+      70,
+      0,
+      "IMAGE"
+    ],
+    [
+      52,
+      4,
+      0,
+      30,
+      0,
+      "IMAGE"
+    ],
+    [
+      53,
+      60,
+      0,
+      61,
+      0,
+      "DA3_MODEL"
+    ],
+    [
+      54,
+      42,
+      0,
+      61,
+      1,
+      "IMAGE"
+    ],
+    [
+      55,
+      61,
+      0,
+      62,
+      0,
+      "DA3_GEOMETRY"
+    ],
+    [
+      56,
+      62,
+      0,
+      63,
+      0,
+      "IMAGE"
+    ],
+    [
+      57,
+      18,
+      0,
+      19,
+      0,
+      "IMAGE"
+    ],
+    [
+      58,
+      18,
+      0,
+      20,
+      0,
+      "IMAGE"
+    ],
+    [
+      59,
+      82,
+      0,
+      84,
+      0,
+      "IMAGE"
+    ],
+    [
+      60,
+      42,
+      0,
+      45,
+      0,
+      "IMAGE"
+    ],
+    [
+      61,
+      62,
+      0,
+      64,
+      0,
+      "IMAGE"
+    ],
+    [
+      62,
+      62,
+      0,
+      100,
+      0,
+      "IMAGE"
+    ],
+    [
+      63,
+      100,
+      0,
+      101,
+      0,
+      "MASK"
+    ],
+    [
+      64,
+      101,
+      0,
+      102,
+      0,
+      "MASK"
+    ],
+    [
+      65,
+      102,
+      0,
+      103,
+      0,
+      "MASK"
+    ],
+    [
+      66,
+      103,
+      0,
+      104,
+      0,
+      "IMAGE"
+    ],
+    [
+      67,
+      104,
+      0,
+      105,
+      0,
+      "IMAGE"
+    ],
+    [
+      68,
+      104,
+      0,
+      106,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "STAGE T  -  Test subject generator  (ACTIVE)  -  skip this for a real customer job",
+      "bounding": [
+        480,
+        -20,
+        1930,
+        780
+      ],
+      "color": "#3f789e",
+      "font_size": 28,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "STAGE 1  -  NORMALIZE  (muted)  -  relight and isolate.  Identity must survive.",
+      "bounding": [
+        480,
+        940,
+        2550,
+        780
+      ],
+      "color": "#c07a2a",
+      "font_size": 28,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "STAGE 2  -  Convert to SCULPTED RELIEF  (muted)",
+      "bounding": [
+        480,
+        1740,
+        2550,
+        780
+      ],
+      "color": "#a1309b",
+      "font_size": 28,
+      "flags": {}
+    },
+    {
+      "id": 4,
+      "title": "STAGE 3  -  Depth map from the relief  (muted)",
+      "bounding": [
+        480,
+        2560,
+        1760,
+        560
+      ],
+      "color": "#3f9e5c",
+      "font_size": 28,
+      "flags": {}
+    },
+    {
+      "id": 5,
+      "title": "STAGE 4  -  Silhouette  (the outline)  (muted)",
+      "bounding": [
+        480,
+        3160,
+        2680,
+        620
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.3,
+      "offset": [
+        0,
+        0
+      ]
+    }
+  },
+  "version": 0.4
+}

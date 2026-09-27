@@ -1,0 +1,22 @@
+# Generated geometry — large, and reproducible from the inputs
+*.stl
+*.npy
+
+# Posted g-code
+*.nc
+*.tap
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Build scratch
+_build/
+
+# OS noise
+Thumbs.db
+desktop.ini
+.DS_Store

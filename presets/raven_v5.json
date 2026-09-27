@@ -1,0 +1,12 @@
+{
+  "_comment": "Exact settings that produced Raven_Relief_v5_cam.stl. Use with --mode bas --relief 7.0 --base 10.05 --panel 180x180",
+  "alpha": 6.0,
+  "detail": 0.60,
+  "ced_iters": 42,
+  "ced_rho": 6.5,
+  "ced_alpha": 0.005,
+  "groove": 1.00,
+  "grain": 0.08,
+  "hp_sigma": 22,
+  "base_lift": 0.28
+}

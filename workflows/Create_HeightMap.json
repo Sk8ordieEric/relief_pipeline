@@ -1,0 +1,364 @@
+{
+  "id": "create-heightmap",
+  "revision": 0,
+  "last_node_id": 50,
+  "last_link_id": 6,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [
+        40,
+        60
+      ],
+      "size": [
+        380,
+        330
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2,
+            4
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "Raven_Right_Pose.png",
+        "image"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "LoadDA3Model",
+      "pos": [
+        40,
+        440
+      ],
+      "size": [
+        380,
+        100
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "DA3_MODEL",
+          "type": "DA3_MODEL",
+          "links": [
+            1
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadDA3Model",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "depth_anything_3_mono_large.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "DA3Inference",
+      "pos": [
+        490,
+        60
+      ],
+      "size": [
+        350,
+        150
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "da3_model",
+          "type": "DA3_MODEL",
+          "link": 1
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "da3_geometry",
+          "type": "DA3_GEOMETRY",
+          "links": [
+            3
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DA3Inference",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        1008,
+        "upper_bound_resize",
+        "mono"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "DA3Render",
+      "pos": [
+        490,
+        270
+      ],
+      "size": [
+        350,
+        130
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "da3_geometry",
+          "type": "DA3_GEOMETRY",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            5,
+            6
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DA3Render",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "depth",
+        "min_max",
+        false
+      ]
+    },
+    {
+      "id": 5,
+      "type": "PreviewImage",
+      "pos": [
+        900,
+        60
+      ],
+      "size": [
+        430,
+        470
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 4
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [],
+      "title": "Preview  -  SOURCE"
+    },
+    {
+      "id": 6,
+      "type": "PreviewImage",
+      "pos": [
+        1380,
+        60
+      ],
+      "size": [
+        430,
+        470
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 5
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [],
+      "title": "Preview  -  DEPTH MAP"
+    },
+    {
+      "id": 7,
+      "type": "SaveImage",
+      "pos": [
+        1900,
+        60
+      ],
+      "size": [
+        430,
+        470
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 2,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 6
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "RENAME_BEFORE_SAVING"
+      ],
+      "title": "Save Image  (MUTED)",
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 50,
+      "type": "MarkdownNote",
+      "pos": [
+        40,
+        600
+      ],
+      "size": [
+        420,
+        900
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "MarkdownNote",
+        "cnr_id": "comfy-core"
+      },
+      "widgets_values": [
+        "# Create HeightMap\n\nTurns the approved source image into a **depth map** - the base layer for the bas-relief.\n\n## Why this exists\nThe first heightmaps were built from a distance transform (height = distance from the outline). That makes a fat torso tall and a narrow head short, so the raven came out as a pillow with a flattened head - crown at 0.46 where the body was 0.79. Depth Anything 3 estimates **actual depth toward the camera**, so the head sits forward where it belongs.\n\n## Install before first run\nOne file, 1.27 GB, into `ComfyUI/models/geometry_estimation/`:\n\n```\nhf download Comfy-Org/Depth-Anything-3 \\\n  geometry_estimation/depth_anything_3_mono_large.safetensors \\\n  --local-dir \"C:\\AI\\ComfyUI\\ComfyUI_windows_portable\\ComfyUI\\models\"\n```\nIt lands in the right folder already - no moving needed this time. Restart ComfyUI afterwards.\n\n## How to use\n1. Pick your source in **Load Image** (defaults to `Raven_Right_Pose.png`).\n2. Run.\n3. Compare the two previews: source on the left, depth on the right.\n\n**What a good depth map looks like:** near surfaces bright, far surfaces dark. The beak and breast should be the brightest parts of the bird, the tail the darkest. If the head is dark and the body bright, the depth is inverted or the model misread the pose - tell me and I will flip or re-run it.\n\n## Settings that matter\n- `resolution` **1008** - matches the 1024 px source (must be a multiple of 14).\n- `normalization` **min_max** - stretches the full depth range to 0-1 for maximum relief travel. `v2_style` is perceptually prettier but compresses the ends, which costs carve depth.\n- `mode` **mono** - single image. Leave it.\n\n## Saving\nSaving is OFF, same as the other workflows. To keep a depth map: type a name into the **Save Image** node's `filename_prefix` (replace `RENAME_BEFORE_SAVING`), select it, **Ctrl+M** to unmute, Run, then **Ctrl+M** back off. Name it to match its source - `Raven_Right_Pose_depth`.\n\n## What happens next\nI take the depth map plus the source, build the silhouette mask from the source, combine the two into a height field, and generate the STL. The depth map alone is not the heightmap - it has no clean silhouette and no base plate."
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      3,
+      0,
+      "DA3_MODEL"
+    ],
+    [
+      2,
+      1,
+      0,
+      3,
+      1,
+      "IMAGE"
+    ],
+    [
+      3,
+      3,
+      0,
+      4,
+      0,
+      "DA3_GEOMETRY"
+    ],
+    [
+      4,
+      1,
+      0,
+      5,
+      0,
+      "IMAGE"
+    ],
+    [
+      5,
+      4,
+      0,
+      6,
+      0,
+      "IMAGE"
+    ],
+    [
+      6,
+      4,
+      0,
+      7,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "DEPTH ESTIMATION  -  Depth Anything 3 (mono, large)",
+      "bounding": [
+        470,
+        -20,
+        1360,
+        560
+      ],
+      "color": "#3f789e",
+      "font_size": 28,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.62,
+      "offset": [
+        0,
+        0
+      ]
+    }
+  },
+  "version": 0.4
+}

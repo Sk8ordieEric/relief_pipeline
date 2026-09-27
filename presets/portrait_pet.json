@@ -1,0 +1,12 @@
+{
+  "_comment": "Pet portraits. Fur gets the flow smoothing; compression carries the depth range. Use with --mode portrait --relief 5.0 --panel 203x254",
+  "alpha": 11.0,
+  "detail": 0.28,
+  "ced_iters": 34,
+  "ced_rho": 5.0,
+  "ced_alpha": 0.006,
+  "groove": 0.75,
+  "grain": 0.05,
+  "hp_sigma": 26,
+  "base_lift": 0.22
+}

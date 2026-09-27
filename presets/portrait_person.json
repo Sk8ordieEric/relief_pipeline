@@ -1,0 +1,12 @@
+{
+  "_comment": "Human portraits. Skin has no coherent structure so CED is dialled right down and hair becomes the only flow feature. Detail gain lower still - engraved skin looks wrong. UNTESTED, start here and adjust.",
+  "alpha": 13.0,
+  "detail": 0.18,
+  "ced_iters": 20,
+  "ced_rho": 7.0,
+  "ced_alpha": 0.010,
+  "groove": 0.60,
+  "grain": 0.04,
+  "hp_sigma": 30,
+  "base_lift": 0.20
+}
